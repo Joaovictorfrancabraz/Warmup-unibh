@@ -1,0 +1,166 @@
+# Warmup-unibh
+UNIBH
+import java.util.Scanner;
+
+public class exeListas {
+
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in);
+        Carrinho produtosalvadoCarrinho = new Carrinho();
+        int op = 0;
+
+        while (op != 5) {
+            s = new Scanner(System.in);
+            System.out.println("opções lista Gabriel :)\n");
+
+            System.out.println("(1) Adicionar");
+            System.out.println("(2) Remover");
+            System.out.println("(3) Checar Vazio");
+            System.out.println("(4) Mostrar Carrinho");
+            System.out.println("(5) Sair\n");
+
+            op = s.nextInt();
+
+            if (op == 1) {
+
+                s = new Scanner(System.in);
+                Produto mercadoria = new Produto();
+        
+                System.out.println("\n nome do Produto: ");
+                mercadoria.nomeSet(s.nextLine());
+
+                System.out.println("tipo de Produto: ");
+                mercadoria.descricaoSet(s.nextLine());
+
+                System.out.println("quantidade de Produtos: ");
+                mercadoria.quantidadeSet(s.nextInt());
+
+                System.out.println("Valor referente ao  Produto: ");
+                mercadoria.valorTotalSet(s.nextFloat());
+
+                produtosalvadoCarrinho.Inserir( mercadoria);
+            }else if(op == 2){
+                System.out.print("\nDigite a posição do produto: ");
+                int pos = s.nextInt();
+                produtosalvadoCarrinho.Remover(pos);
+            }else if(op == 3){
+                if(produtosalvadoCarrinho.Vazio()){
+                    System.out.println("\nO Carrinho está vazio :)\n");
+                }else {
+                    System.out.println("\nO Carrinho tem produtos\n");
+                }
+            }else if(op == 4){
+                int i = 0;
+
+                while(i < produtosalvadoCarrinho.ultimoGet()){
+                    Produto produtoView = produtosalvadoCarrinho.produtosGet(i);
+                    System.out.println(produtoView.nomeGet());
+                    System.out.println(produtoView.descricaoGet());
+                    System.out.println(produtoView.quantidadeGet());
+                    System.out.println(produtoView.valorTotalGet() + "\n");
+                    i++;
+                }
+            
+            }else {
+                op = 5;
+            }
+
+        }
+    }
+
+}
+
+class Produto {
+
+    public int p;
+    private int quant;
+    private float valorTotal;
+    private String nome;
+    private String descricao;
+
+    public int quantidadeGet() {
+        return this.quant;
+    }
+
+    public float valorTotalGet() {
+        return this.valorTotal;
+    }
+
+    public String nomeGet() {
+        return this.nome;
+    }
+
+    public String descricaoGet() {
+        return this.descricao;
+    }
+
+    public void quantidadeSet(int val) {
+        this.quant = val;
+    }
+
+    public void valorTotalSet(float val) {
+        this.valorTotal = val;
+    }
+
+    public void nomeSet(String val) {
+        this.nome = val;
+    }
+
+    public void descricaoSet(String val) {
+        this.descricao = val;
+    }
+}
+
+class Carrinho {
+
+    private int ultimo = 0;
+    private String nome = "Gabriel";
+    private Produto[] produtos = new Produto[10];
+
+    public int ultimoGet() {
+        return this.ultimo;
+    }
+
+    public String nomeGet() {
+        return this.nome;
+    }
+
+    public Carrinho() {
+    }
+
+    public Produto produtosGet (int i){
+        return produtos[i];
+    }
+
+    public boolean Vazio() {
+        return (this.ultimo == 0);
+    }
+
+    public void Inserir(Produto p1) {
+        if (this.ultimo >= this.produtos.length) {
+            System.out.println("Lista cheia\n\n");
+        } else {
+            this.produtos[this.ultimo] = p1;
+            this.ultimo++;
+            System.out.println("\nProduto adicionado\n");
+        }
+    }
+
+    public void Remover(int pos) {
+        if (pos > 10 || pos < 1) {
+            System.out.println("\nInforme um valor valido (1, 2, 3... 10)\n");
+        } else if (pos > ultimo) {
+            System.out.println("\nNão existe um produto nessa posição... ainda\n");
+        } else {
+            produtos[pos - 1] = null;
+            while (pos < ultimo) {
+                produtos[pos - 1] = produtos[pos];
+                pos++;
+            }
+            produtos[pos-1] = null;
+            ultimo--;
+            System.out.println("\nItem removido com sucesso\n");
+        }
+    }
+}
